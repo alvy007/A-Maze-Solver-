@@ -1,0 +1,129 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0a1220"><meta name="description" content="Interactive maze editor and optimal A* pathfinding visualization using Manhattan distance and four-direction movement."><title>Pathfinder Lab | A* Maze Solver</title><style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');:root{color-scheme:dark;--bg:#0b1220;--panel:#131f30;--surface:#1a2a3d;--border:#2b4156;--text:#e9f4ff;--muted:#94a9bc;--cyan:#6bdddb;--green:#7cdeb1;--gold:#f2c67f;font-family:'DM Sans',system-ui,sans-serif}*{box-sizing:border-box}body{margin:0;color:var(--text);background:radial-gradient(ellipse at 50% -20%,#1a3551,transparent 55%),var(--bg)}button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}.shell{max-width:1550px;width:calc(100% - 65px);margin:0 auto}header{height:86px;border-bottom:1px solid #294054;display:flex;justify-content:space-between;align-items:center}.brand{display:flex;align-items:center;gap:13px;font-family:'Space Grotesk';font-weight:700;letter-spacing:.5px;font-size:22px}.brand b{color:var(--cyan)}.brand small{display:block;font-family:'DM Sans';font-size:9px;letter-spacing:1.8px;color:var(--muted);margin-top:5px}.brand-icon{width:48px;height:48px;border:1px solid #398b8c;border-radius:14px;background:#214149;color:var(--cyan);display:grid;place-items:center;font-size:40px;line-height:1}.head-right{display:flex;gap:26px;font-size:10px;color:var(--muted);font-weight:800;letter-spacing:1.5px}.online{color:var(--green)}.online i{width:7px;height:7px;display:inline-block;border-radius:50%;background:var(--green);margin-right:5px}.heading{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:38px 0}.eyebrow,.cap{color:var(--cyan);font-size:10px;letter-spacing:2px;font-weight:800}.heading h1{font-family:'Space Grotesk';font-size:clamp(33px,4vw,56px);line-height:1.13;letter-spacing:-2px;margin:14px 0}.heading h1 em{font-style:normal;color:var(--cyan)}.heading p:last-child{color:var(--muted);font-size:13px;line-height:1.7;max-width:640px}.method{background:#132b3d;border:1px solid #35566b;border-radius:16px;min-width:200px;padding:18px 23px}.method span,.method small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.2px;font-weight:800}.method strong{display:block;font-family:'Space Grotesk';font-size:23px;margin:7px 0;color:var(--cyan)}main{display:grid;grid-template-columns:260px minmax(400px,1fr) 210px;align-items:start;gap:19px}.sidebar,.stats{display:flex;flex-direction:column;gap:18px}.panel,.algorithm,.stats{background:#121f2f;border:1px solid var(--border);border-radius:19px;padding:21px}.panel h2,.algorithm h2,.stats h2{font-family:'Space Grotesk';font-size:23px;margin:13px 0}.panel p,.algorithm p,.stats p{font-size:12px;color:var(--muted);line-height:1.75}.tool-list{display:grid;gap:9px;margin:22px 0}.tool{display:flex;align-items:center;gap:11px;text-align:left;border:1px solid #354c60;background:#192a3e;border-radius:10px;padding:12px 11px;color:#a6bfd1;font-size:16px;font-weight:700}.tool span{font-size:12px;color:var(--text);flex:1}.tool b{font-size:9px;color:#7f9cb0}.tool.selected{background:#204949;border-color:#55c5bd;color:var(--cyan)}.field label,.speed label{display:block;font-size:10px;letter-spacing:1.4px;color:#a6bfd1;font-weight:800;margin-bottom:8px}.field select{background:#1a2c3e;border:1px solid #3a5267;border-radius:10px;padding:12px;color:var(--text);font-size:12px;width:100%}.secondary{border:1px solid #3b5869;border-radius:10px;background:#1c3040;color:#d6eaf7;padding:12px;width:100%;font-size:12px;font-weight:700;margin-top:15px}.secondary:hover{border-color:var(--cyan)}.algorithm{background:linear-gradient(130deg,#122c38,#142336)}.algorithm strong{color:var(--cyan)}.formula{display:flex;justify-content:space-between;align-items:center;gap:6px;padding-top:13px;border-top:1px solid #355062}.formula span{color:var(--cyan);font-size:15px;font-weight:800}.formula small{font-size:9px;color:var(--muted)}.formula b{color:#e1bd88}.workspace{min-width:0;background:#131f30;border:1px solid var(--border);border-radius:19px;padding:25px}.workspace-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:24px}.workspace-top h2{font-family:'Space Grotesk';font-size:24px;margin:8px 0 0}.active-label{font-size:9px;color:var(--muted);letter-spacing:1.4px;font-weight:800}.active-label b{display:block;text-align:right;color:var(--cyan);font-size:12px;margin-top:8px}.board-frame{border:1px solid #30475d;background:#0d1c2b;border-radius:15px;padding:17px}.maze-grid{--cols:21;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:3px;touch-action:none;user-select:none}.tile{border:1px solid #30475a;border-radius:3px;aspect-ratio:1;background:#23394d;padding:0;color:#0c2424;font-size:clamp(8px,1.3vw,13px);font-weight:800;display:grid;place-items:center;min-width:0;transition:background .12s}.tile:hover{border-color:var(--cyan)}.tile.wall{background:#68819a;border-color:#7894ae;box-shadow:inset 0 0 0 2px #59738b}.tile.visited{background:#37647b;border-color:#4487a2}.tile.path{background:#f2c67f;border-color:#ffe3ac;box-shadow:0 0 12px #e4b64d50}.tile.start{background:#73dfb7;border-color:#c6ffe8;color:#113c3a;box-shadow:0 0 12px #73dfb76a}.tile.goal{background:#f08c9e;border-color:#ffc7ce;color:#511c2d;box-shadow:0 0 12px #f08c9e74}.legend{display:flex;flex-wrap:wrap;gap:15px;justify-content:center;padding-top:18px;color:var(--muted);font-size:10px;font-weight:700}.legend span{display:flex;align-items:center;gap:6px}.legend i{width:11px;height:11px;border-radius:3px;display:inline-block}.legend-start{background:#73dfb7}.legend-goal{background:#f08c9e}.legend-wall{background:#68819a}.legend-visited{background:#37647b}.legend-path{background:#f2c67f}.playback{display:flex;gap:20px;align-items:center;justify-content:space-between;margin-top:23px}.speed{flex:1;max-width:270px}.speed label{display:flex;justify-content:space-between}.speed label b{color:var(--cyan)}.speed input{accent-color:var(--cyan);width:100%;cursor:pointer}.solve{background:var(--cyan);color:#063236;border:0;border-radius:11px;font-weight:800;font-size:12px;padding:16px 22px;white-space:nowrap}.solve:disabled{opacity:.5}.info{margin-top:17px;color:var(--muted);background:#1b2c3b;border:1px solid #334a5d;border-radius:10px;padding:14px 17px;font-size:12px;line-height:1.6}.info.warning{color:#f8c79e;border-color:#795540}.stats .cap{display:block}.stats h2{margin-top:14px}.stat{border-top:1px solid #2c4357;padding:22px 0}.stat>span,.stat small{display:block;font-size:10px;letter-spacing:1.1px;color:var(--muted);font-weight:800}.stat b{font-family:'Space Grotesk';font-size:32px;display:block;color:var(--cyan);margin:6px 0;overflow-wrap:anywhere}.stat small{font-size:10px;letter-spacing:0;font-weight:500}.tip{border:1px solid #3f635b;background:#193a39;padding:13px;border-radius:11px}.tip strong{font-size:10px;letter-spacing:1px;color:var(--green)}.tip p{margin-bottom:0}footer{display:flex;justify-content:space-between;gap:10px;padding:32px 0;color:#647f93;font-size:10px;letter-spacing:1.3px;font-weight:800}@media(max-width:1270px){main{grid-template-columns:220px minmax(380px,1fr)}.stats{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.stats>.cap,.stats>h2,.stats>p{grid-column:1/-1}.stats .stat{padding:8px 0}.stats .tip{grid-column:1/-1}}@media(max-width:780px){.shell{width:calc(100% - 28px)}header{height:70px}.head-right{display:none}.heading{margin:25px 0}.method{display:none}main{grid-template-columns:1fr}.sidebar{display:grid;grid-template-columns:1fr 1fr}.panel,.algorithm{padding:17px}.workspace{padding:16px}.stats{grid-template-columns:repeat(3,1fr)}.tile{border-radius:2px}.board-frame{padding:8px}.maze-grid{gap:2px}}@media(max-width:530px){.brand{font-size:17px}.sidebar{grid-template-columns:1fr}.heading h1{font-size:32px}.workspace-top h2{font-size:18px}.workspace .cap{font-size:9px}.tile{font-size:8px}.maze-grid{gap:1px}.legend{gap:8px;font-size:9px}.playback{flex-wrap:wrap}.speed{max-width:none;width:100%}.solve{width:100%}.stats{grid-template-columns:1fr 1fr}.stats .tip{grid-column:1/-1}.stats .stat{font-size:11px}footer{flex-wrap:wrap;line-height:1.8}}
+
+</style></head><body>
+<div class="shell"><header><div class="brand"><span class="brand-icon">⌁</span><div>PATHFINDER <b>LAB</b><small>CLASSICAL AI / HEURISTIC SEARCH</small></div></div><div class="head-right"><span class="online"><i></i> ENGINE READY</span><span>W01 / PROJECT 04</span></div></header>
+<div class="heading"><div><p class="eyebrow">SEARCH ALGORITHMS / INTERACTIVE VISUALIZER</p><h1>Find the <em>optimal path.</em></h1><p>Design a maze, place your start and goal, and watch A* explore the search space to find the shortest route.</p></div><div class="method"><span>ALGORITHM</span><strong>A* SEARCH</strong><small>f(n) = g(n) + h(n)</small></div></div>
+<main><aside class="sidebar"><div class="panel"><span class="cap">01 / DESIGN YOUR MAZE</span><h2>Grid editor</h2><p>Select a drawing tool, then click or drag over the grid.</p><div class="tool-list"><button type="button" data-tool="wall" class="tool selected">▦ <span>Draw walls</span><b>W</b></button><button type="button" data-tool="erase" class="tool">◇ <span>Erase walls</span><b>E</b></button><button type="button" data-tool="start" class="tool">S <span>Move start</span><b>S</b></button><button type="button" data-tool="goal" class="tool">G <span>Move goal</span><b>G</b></button></div><div class="field"><label for="preset">STARTING LAYOUT</label><select id="preset"><option value="sample">Challenge maze</option><option value="random">Random obstacles</option><option value="blocked">Unreachable example</option><option value="empty">Empty canvas</option></select></div><button id="clearBtn" type="button" class="secondary">↻ &nbsp; Clear grid</button></div><div class="algorithm"><span class="cap">UNDER THE HOOD</span><h2>Why A*?</h2><p>A* chooses the lowest-cost candidate using <strong>f = g + h</strong>. We use Manhattan distance so four-direction moves remain optimal.</p><div class="formula"><span>g(n)</span><small>Steps taken</small><b>+</b><span>h(n)</span><small>Est. remaining</small></div></div></aside>
+<section class="workspace"><div class="workspace-top"><div><span class="cap">LIVE STATE-SPACE EXPLORATION</span><h2>Maze workspace</h2></div><div class="active-label">ACTIVE TOOL <b id="activeTool">WALL</b></div></div><div class="board-frame"><div id="mazeGrid" class="maze-grid" role="group" aria-label="Editable maze grid"></div><div class="legend"><span><i class="legend-start"></i>Start</span><span><i class="legend-goal"></i>Goal</span><span><i class="legend-wall"></i>Wall</span><span><i class="legend-visited"></i>Explored</span><span><i class="legend-path"></i>Shortest path</span></div></div><div class="playback"><div class="speed"><label for="speed">ANIMATION SPEED <b id="speedValue">7/10</b></label><input type="range" id="speed" min="1" max="10" value="7"></div><button id="solveBtn" class="solve" type="button">▶ &nbsp; Find shortest path</button></div><div id="info" class="info" role="status" aria-live="polite">Choose a tool, edit the grid, then find the shortest path.</div></section>
+<aside class="stats"><span class="cap">02 / SEARCH METRICS</span><h2>Live insights</h2><p>See what the algorithm discovers along its way.</p><div class="stat"><span>SHORTEST PATH LENGTH</span><b id="pathLength">—</b><small>Number of moves</small></div><div class="stat"><span>STATES EXPLORED</span><b id="explored">—</b><small>Unique grid positions</small></div><div class="stat"><span>MAX OPEN FRONTIER</span><b id="frontier">—</b><small>Priority queue entries</small></div><div class="tip"><strong>✦ PRO TIP</strong><p>Use the “Unreachable example” preset to see how the solver responds when no route exists.</p></div></aside></main><footer>PATHFINDER LAB <span>FOUR-WAY MOVEMENT • MANHATTAN HEURISTIC • NO SERVER REQUIRED</span></footer></div><script>
+const __engine = (() => {
+/** Optimal 4-direction A* search over a rectangular grid (0=open, 1=wall). */
+function manhattan(a,b){return Math.abs(a.row-b.row)+Math.abs(a.col-b.col)}
+const key=(r,c)=>`${r},${c}`;
+
+class MinHeap {
+  constructor(){this.items=[]}
+  get size(){return this.items.length}
+  less(a,b){return a.f<b.f || (a.f===b.f&&(a.h<b.h||(a.h===b.h&&a.order<b.order)))}
+  push(v){const a=this.items;a.push(v);let i=a.length-1;while(i>0){const p=(i-1)>>1;if(!this.less(a[i],a[p]))break;[a[p],a[i]]=[a[i],a[p]];i=p}}
+  pop(){const a=this.items;if(!a.length)return null;const top=a[0],last=a.pop();if(a.length){a[0]=last;let i=0;for(;;){let left=i*2+1,right=left+1,small=i;if(left<a.length&&this.less(a[left],a[small]))small=left;if(right<a.length&&this.less(a[right],a[small]))small=right;if(small===i)break;[a[i],a[small]]=[a[small],a[i]];i=small}}return top}
+}
+
+function findPath(grid,start,goal){
+  if(!Array.isArray(grid)||grid.length===0||!Array.isArray(grid[0])||grid[0].length===0)throw new Error('Grid must be a nonempty 2D array.');
+  const rows=grid.length,cols=grid[0].length;
+  if(grid.some(row=>!Array.isArray(row)||row.length!==cols||row.some(x=>x!==0&&x!==1)))throw new Error('Grid must be rectangular and contain only 0 or 1.');
+  const valid=p=>p&&Number.isInteger(p.row)&&Number.isInteger(p.col)&&p.row>=0&&p.row<rows&&p.col>=0&&p.col<cols;
+  if(!valid(start)||!valid(goal))throw new Error('Start and goal must be inside the grid.');
+  if(grid[start.row][start.col]===1||grid[goal.row][goal.col]===1)throw new Error('Start and goal cannot be on walls.');
+  const open=new MinHeap(),cost=new Map(),parent=new Map(),closed=new Set(),visited=[];
+  const begin=key(start.row,start.col),end=key(goal.row,goal.col);
+  let insertion=0,frontierPeak=1;
+  const heuristic=manhattan(start,goal);
+  cost.set(begin,0);open.push({row:start.row,col:start.col,g:0,h:heuristic,f:heuristic,order:insertion++});
+  const directions=[[0,1],[1,0],[0,-1],[-1,0]];
+  while(open.size){
+    const current=open.pop(),id=key(current.row,current.col);
+    if(closed.has(id)||current.g!==cost.get(id))continue;
+    closed.add(id);visited.push({row:current.row,col:current.col});
+    if(id===end){
+      const path=[];let node=id;
+      while(node){const [row,col]=node.split(',').map(Number);path.push({row,col});node=parent.get(node)}
+      path.reverse();return {found:true,path,visited,steps:path.length-1,explored:visited.length,frontierPeak};
+    }
+    for(const [dr,dc] of directions){
+      const row=current.row+dr,col=current.col+dc;
+      if(row<0||row>=rows||col<0||col>=cols||grid[row][col]===1)continue;
+      const next=key(row,col),newG=current.g+1;
+      if(closed.has(next)||newG>=(cost.get(next)??Infinity))continue;
+      cost.set(next,newG);parent.set(next,id);
+      const h=manhattan({row,col},goal);
+      open.push({row,col,g:newG,h,f:newG+h,order:insertion++});
+      frontierPeak=Math.max(frontierPeak,open.size);
+    }
+  }
+  return {found:false,path:[],visited,steps:null,explored:visited.length,frontierPeak};
+}
+
+return {manhattan,findPath};
+})();
+const {manhattan,findPath} = __engine;
+const $=id=>document.getElementById(id);
+const ROWS=15,COLS=21;
+let grid=[],start={row:7,col:2},goal={row:7,col:18},mode='wall',dragging=false,animationId=0,busy=false;
+const nodes=[],visited=new Set(),path=new Set();
+const key=(r,c)=>r*COLS+c;
+const wait=delay=>new Promise(resolve=>setTimeout(resolve,delay));
+function newGrid(){return Array.from({length:ROWS},()=>Array(COLS).fill(0))}
+function sample(){grid=newGrid();start={row:7,col:2};goal={row:7,col:18};
+ for(let r=0;r<ROWS;r++){if(r!==2&&r!==11)grid[r][5]=1;if(r!==5&&r!==12)grid[r][10]=1;if(r!==3&&r!==9)grid[r][15]=1}
+ for(let c=5;c<=10;c++)if(c!==8)grid[3][c]=1;
+ for(let c=10;c<=15;c++)if(c!==13)grid[11][c]=1;
+ grid[start.row][start.col]=0;grid[goal.row][goal.col]=0;
+}
+function randomMap(){grid=newGrid();start={row:7,col:2};goal={row:7,col:18};for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++)if(Math.random()<.24)grid[r][c]=1;grid[start.row][start.col]=0;grid[goal.row][goal.col]=0}
+function blockedMap(){grid=newGrid();start={row:7,col:2};goal={row:7,col:18};for(const [dr,dc] of [[0,1],[1,0],[0,-1],[-1,0]])grid[goal.row+dr][goal.col+dc]=1}
+function cancel(){animationId++;busy=false;visited.clear();path.clear();$('solveBtn').disabled=false;}
+function info(text,warning=false){$('info').textContent=text;$('info').classList.toggle('warning',warning)}
+function resetStats(){for(const id of ['pathLength','explored','frontier'])$(id).textContent='—';}
+function updateCell(i){const r=Math.floor(i/COLS),c=i%COLS,node=nodes[i];
+ const isStart=r===start.row&&c===start.col,isGoal=r===goal.row&&c===goal.col;
+ node.className='tile'+(grid[r][c]?' wall':'')+(visited.has(i)?' visited':'')+(path.has(i)?' path':'')+(isStart?' start':'')+(isGoal?' goal':'');
+ node.textContent=isStart?'S':isGoal?'G':'';
+ node.setAttribute('aria-label',`Row ${r+1}, column ${c+1}, ${isStart?'start':isGoal?'goal':grid[r][c]?'wall':path.has(i)?'solution path':visited.has(i)?'explored':'open'}`);
+}
+function drawAll(){for(let i=0;i<nodes.length;i++)updateCell(i)}
+function resetVisual(){cancel();resetStats();drawAll();info('Choose a tool, edit the grid, then find the shortest path.')}
+function changeAt(r,c){if(busy)return;const atStart=r===start.row&&c===start.col,atGoal=r===goal.row&&c===goal.col;
+ if(mode==='start'){if(atGoal)return;start={row:r,col:c};grid[r][c]=0}
+ else if(mode==='goal'){if(atStart)return;goal={row:r,col:c};grid[r][c]=0}
+ else if(!atStart&&!atGoal)grid[r][c]=mode==='wall'?1:0;
+ visited.clear();path.clear();resetStats();drawAll();info('Grid updated. Run A* to calculate a new route.');
+}
+function setupCells(){const board=$('mazeGrid');board.style.setProperty('--cols',COLS);
+ for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+  const cell=document.createElement('button');cell.type='button';cell.className='tile';cell.dataset.row=r;cell.dataset.col=c;board.append(cell);nodes.push(cell);
+  cell.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.preventDefault();dragging=true;changeAt(r,c)});
+  cell.addEventListener('pointerenter',()=>{if(dragging&&(mode==='wall'||mode==='erase'))changeAt(r,c)});
+  cell.addEventListener('click',()=>{if(!dragging)changeAt(r,c)});
+ }
+ window.addEventListener('pointerup',()=>{dragging=false});window.addEventListener('pointercancel',()=>{dragging=false});
+}
+function setTool(next){mode=next;document.querySelectorAll('[data-tool]').forEach(b=>{const active=b.dataset.tool===mode;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',String(active))});$('activeTool').textContent=mode.toUpperCase()}
+document.querySelectorAll('[data-tool]').forEach(b=>b.addEventListener('click',()=>setTool(b.dataset.tool)));
+window.addEventListener('keydown',e=>{if(['INPUT','SELECT','TEXTAREA'].includes(document.activeElement?.tagName))return;const shortcut={w:'wall',e:'erase',s:'start',g:'goal'}[e.key.toLowerCase()];if(shortcut)setTool(shortcut)});
+function usePreset(preset){cancel();if(preset==='random')randomMap();else if(preset==='blocked')blockedMap();else if(preset==='empty'){grid=newGrid();start={row:7,col:2};goal={row:7,col:18}}else sample();resetVisual()}
+$('preset').addEventListener('change',e=>usePreset(e.target.value));$('clearBtn').addEventListener('click',()=>usePreset('empty'));
+$('speed').addEventListener('input',e=>{$('speedValue').textContent=`${e.target.value}/10`});
+$('solveBtn').addEventListener('click',async()=>{
+ cancel();drawAll();const thisRun=animationId;busy=true;$('solveBtn').disabled=true;
+ let result;try{result=findPath(grid,start,goal)}catch(e){info(e.message,true);busy=false;$('solveBtn').disabled=false;return}
+ $('pathLength').textContent=result.found?String(result.steps):'NO PATH';$('explored').textContent=String(result.explored);$('frontier').textContent=String(result.frontierPeak);
+ info(result.found?'Searching the state-space…':'Scanning accessible nodes…');
+ const speed=Number($('speed').value),stepDelay=Math.max(2,32-speed*3);
+ const perTick=speed>=8?9:speed>=5?4:2;
+ for(let i=0;i<result.visited.length;i+=perTick){
+  if(thisRun!==animationId)return;
+  for(const p of result.visited.slice(i,i+perTick)){const id=key(p.row,p.col);visited.add(id);updateCell(id)}
+  await wait(stepDelay);
+ }
+ if(thisRun!==animationId)return;
+ if(result.found){for(const p of result.path){if(thisRun!==animationId)return;const id=key(p.row,p.col);path.add(id);updateCell(id);await wait(Math.max(3,stepDelay*1.4))}
+  info(`Optimal route found: ${result.steps} moves. Manhattan distance heuristic (4-way movement).`);
+ }else info('No route exists. The goal is unreachable with the current walls.',true);
+ busy=false;$('solveBtn').disabled=false;
+});
+setupCells();sample();setTool('wall');drawAll();
+
+</script></body></html>
